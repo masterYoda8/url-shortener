@@ -1,0 +1,23 @@
+.content {
+    padding: 80px;
+}
+.header {
+    padding-bottom: 50px;
+    padding-top: 30px;
+}
+
+.input-group {
+    max-width: 800px;
+    padding: 10px 0px;
+}
+
+#createButton {
+    margin: 15px 0px;
+}
+
+#successAlert, #errorAlert {
+    position: absolute;
+    display: none;
+    top: 10px;
+    min-width: 300px;
+}
