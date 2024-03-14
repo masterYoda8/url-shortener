@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   db:
+    container_name: url-shortener-db
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/postgres/data 
@@ -13,14 +14,30 @@ services:
       - POSTGRES_PORT
     ports:
       - "5432:5432"
-  #web:
-  #  build: .
-  #  volumes:
-  #    - .:/code
-  #  ports:
-  #    - "8000:8000"
-  #  depends_on:
-  #    - db
+    networks:
+      - traefik-public
+  web:
+    container_name: url-shortener
+    build: .
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.url-shortener.loadbalancer.server.port=8000"
+      - "traefik.http.routers.url-shortener.rule=Host(`url.remberger.dev`)"
+      - "traefik.http.routers.url-shortener.entrypoints=websecure"
+      - "traefik.docker.network=traefik-public"
+      - "traefik.http.routers.url-shortener.tls.certresolver=certresolver"
+    networks:
+        - traefik-public
 
 volumes:
   postgres_data:
+
+networks:
+  traefik-public:
+    external: true
