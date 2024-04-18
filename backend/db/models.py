@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, functions
+from sqlalchemy import Column, Integer, String, DateTime, func
 from sqlalchemy.ext.declarative import declarative_base
 from .database import engine
 from datetime import datetime, timezone
@@ -10,6 +10,6 @@ class URLMapping(Base):
     id = Column(Integer, primary_key=True, index=True)
     short_url = Column(String, unique=True, index=True)
     original_url = Column(String)
-    created_at = Column(DateTime, server_default=functions.now())
+    created_at = Column(DateTime, server_default=func.now())
 
 Base.metadata.create_all(bind=engine)
